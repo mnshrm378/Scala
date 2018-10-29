@@ -1,0 +1,43 @@
+{
+  "versions": {
+    "pc": {
+      "collectionTool": [2, 2, 1],
+      "adtfStreamingLibrary": [2, 7, 1]
+    },
+    "bob": {
+      "fpgaVersion": [7, 1, 17]
+    }
+  },
+  "errorCount": 0,
+  "labels": {
+    "com_country_code": "SE",
+    "sky": [[0, 0, "partlyCloudy"]],
+    "detailedPrecipitation": [[0, 0, "none"]],
+    "timeOfDay": [[0, 0, "duskDawn"]],
+    "roadType": [[0, 0, "ruralRoad"]],
+    "streetLighting": [[0, 0, "false"]]
+  },
+  "properties": [{
+    "BoB": "MPC-2098D",
+    "Driver": "Kristian Bergström",
+    "bobCh1": "N/A",
+    "bobCh2": "167_205_213_217_222_238_463_EVA1_MFA2_PERIPHERY_CAN_2016_42a",
+    "bobCh3": "N/A",
+    "bobCh4": "N/A",
+    "bobfr": "SMPC_STAR_2_3_V1_2016_Ecu_Details_Extract_2016_42a.arxml",
+    "comments": "",
+    "ecuID": "MPCEVO0003",
+    "headlights": "Static LED",
+    "leftType": "N/A",
+    "otherHardware": ["N/A"],
+    "relatedIssueNumber": "474870",
+    "rightType": "RGB",
+    "softwareRelease": "R19RC6",
+    "vin": "WDB463601X258769",
+    "windshield": "Clear"
+  }],
+  "requiredSignals": null,
+  "missingAndInvalidSignals": [],
+  "triggerDefinitions": null,
+  "triggerEvents": []
+}
