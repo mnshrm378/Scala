@@ -1,0 +1,13 @@
+cd C:\Users\alay.singhal\Downloads\elasticsearch-6.4.3\elasticsearch-6.4.3\bin
+set "JAVA_HOME=C:\Program Files\Java\jdk1.8.0_181"
+cd C:\Users\alay.singhal\Downloads\elasticsearch-6.4.3\elasticsearch-6.4.3\bin
+	>elasticsearch -Ecluster.name=markedData_cluster -Enode.name=Node1
+cd C:\Users\alay.singhal\Downloads\kibana-6.4.3-windows-x86_64\kibana-6.4.3-windows-x86_64\bin
+	>kibana.bat
+
+GET /_cat/health?v
+
+GET /_cat/nodes?v
+GET /_cat/indices?v
+PUT /fileinfo-markeddata?pretty
+DELETE /fileinfo-markeddata?pretty
