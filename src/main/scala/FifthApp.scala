@@ -35,11 +35,11 @@ val spark = SparkSession.builder.master("local").appName("Spark_SQL_basic_exampl
 val df = spark.read.format("csv").option("inferSchema","true").load(outputPath + "\\" + "part-00000")
 println("file info data in dataframe")
 df.show(10)
-println("extracting column headings as per metadata in y")
-val colHeadingsRow = pairz.values.filter(line => line.startsWith("22,"))
-val countCol = colHeadingsRow.flatMap(line => (line.split(",")))
-val n = countCol.count().toInt
-val colHeadings = colHeadingsRow.flatMap(line => (line.split(","))).take(n).mkString(", ").foreach(print)
+//println("extracting column headings as per metadata in y")
+//val colHeadingsRow = pairz.values.filter(line => line.startsWith("22,"))
+//val countCol = colHeadingsRow.flatMap(line => (line.split(",")))
+//val n = countCol.count().toInt
+//val colHeadings = colHeadingsRow.flatMap(line => (line.split(","))).take(n).mkString(", ").foreach(print)
 val schemaString = "lineno,frameNumber,streamName,refId,objectType,height,direction,movement,occlusion,headOccluded,feetOccluded,overlapped,unsharp,strangePose,crossing,accessory,topLeftX,topLeftY,topRightX,topRightY,bottomRightX,bottomRightY,bottomLeftX,bottomLeftY,box3DGroundLength,box3DGroundWidth,box3DGroundCenterX,box3DGroundCenterXSigma,box3DGroundCenterY,box3DGroundCenterYSigma,box3DClosestPointX,box3DClosestPointY,box3DOrientationAngle,box3DOrientationAngleSigma,box3DHeight,box3DRelVelocityX,box3DRelVelocityXSigma,box3DRelVelocityY,box3DRelVelocityYSigma,box3DDataSource,box3DLidarInterpolationAge,box3DClassificationQuality,lidarDistanceX,lidarDistanceY,lidarVelocityX,lidarVelocityY,isInvalid,isStatic,ObjectId,Ibeo2MarkingsVersion,IdcOdExtractorVersion,clusterID,faceVisible,leftBorderVisibility,rightBorderVisibility"
 val fields = schemaString.split(",").map(fieldName => StructField(fieldName, StringType, nullable = false))
 val schema = StructType(fields)
@@ -49,7 +49,7 @@ val rowRDD = x1.map(_.split(",")).map(attributes => Row(attributes(0), attribute
     attributes(40), attributes(41),attributes(42), attributes(43),attributes(44), attributes(45),attributes(46), attributes(47),attributes(48),
     attributes(49),attributes(50), attributes(51),attributes(52), attributes(53), attributes(54)))
 val finalDF = spark.createDataFrame(rowRDD, schema)
-df.write.format("json").save("C:\\Users\\alay.singhal\\Desktop\\Codes\\DataInJson" + "-" + DataNeeded)
+finalDF.write.format("json").save("C:\\Users\\alay.singhal\\Desktop\\Codes\\DataInJson" + "-" + DataNeeded)
 
 sc.stop()
 }
