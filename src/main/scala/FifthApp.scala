@@ -24,24 +24,26 @@ val sample2 = y
 val newDS2 = sample2.zipWithIndex().map{case(line,i)=>i.toString + "," + line}
 val pairy = newDS2.map(x => (x.split(",")(0),x))
 
-pairy.take(12).foreach(println)
 val pairz = pairx.subtract(pairy)
+
+print("Metadata in this file is as follows")
+pairy.take(12).foreach(println)
 val outputPath = args(2)
 pairz.sortByKey(true).saveAsTextFile(outputPath)
 val DataNeeded = "pedestrian"
 val x1 = sc.textFile(outputPath + "\\" + "part-00000").filter(line => line.contains(DataNeeded))
-
-x1.saveAsTextFile("C:\\Users\\alay.singhal\\Desktop\\Codes\\SpecificData" + "-" + DataNeeded )
 val spark = SparkSession.builder.master("local").appName("Spark_SQL_basic_example").getOrCreate()
-
 val df = spark.read.format("csv").option("inferSchema","true").load(outputPath + "\\" + "part-00000")
-println("file info data in dataframe")
+println("fileinfo data in dataframe")
 df.show(10)
+
 println("extracting column headings as per metadata in y")
 val colHeadingsRow = pairz.values.filter(line => line.startsWith("22,"))
 val countCol = colHeadingsRow.flatMap(line => (line.split(",")))
 val n = countCol.count().toInt
 val colHeadings = colHeadingsRow.flatMap(line => (line.split(","))).take(n).mkString(", ").foreach(print)
+
+x1.saveAsTextFile("C:\\Users\\alay.singhal\\Desktop\\Codes\\SpecificData" + "-" + DataNeeded )
 val schemaString = "frameNumber,streamName,refId,objectType,height,direction,movement,occlusion,headOccluded,feetOccluded,overlapped,unsharp,strangePose,crossing,accessory,topLeftX,topLeftY,topRightX,topRightY,bottomRightX,bottomRightY,bottomLeftX,bottomLeftY,box3DGroundLength,box3DGroundWidth,box3DGroundCenterX,box3DGroundCenterXSigma,box3DGroundCenterY,box3DGroundCenterYSigma,box3DClosestPointX,box3DClosestPointY,box3DOrientationAngle,box3DOrientationAngleSigma,box3DHeight,box3DRelVelocityX,box3DRelVelocityXSigma,box3DRelVelocityY,box3DRelVelocityYSigma,box3DDataSource,box3DLidarInterpolationAge,box3DClassificationQuality,lidarDistanceX,lidarDistanceY,lidarVelocityX,lidarVelocityY,isInvalid,isStatic,ObjectId,Ibeo2MarkingsVersion,IdcOdExtractorVersion,clusterID,faceVisible,leftBorderVisibility,rightBorderVisibility"
 val fields = schemaString.split(",").map(fieldName => StructField(fieldName, StringType, nullable = false))
 val schema = StructType(fields)
