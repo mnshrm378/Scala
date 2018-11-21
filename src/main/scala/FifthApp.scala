@@ -28,10 +28,13 @@ val pairz = pairx.subtract(pairy)
 
 print("Metadata in this file is as follows")
 pairy.take(12).foreach(println)
+
 val outputPath = args(2)
 pairz.sortByKey(true).saveAsTextFile(outputPath)
+
 val DataNeeded = "pedestrian"
 val x1 = sc.textFile(outputPath + "\\" + "part-00000").filter(line => line.contains(DataNeeded))
+
 val spark = SparkSession.builder.master("local").appName("Spark_SQL_basic_example").getOrCreate()
 val df = spark.read.format("csv").option("inferSchema","true").load(outputPath + "\\" + "part-00000")
 println("fileinfo data in dataframe")
