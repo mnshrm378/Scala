@@ -18,16 +18,27 @@ val sc = new SparkContext(conf)
 val fileInfoFile_with_Marked_Data = args(0)
 val x = sc.textFile(fileInfoFile_with_Marked_Data)
 val sample1 = x
-val newDS = sample1
-.zipWithIndex()
-.map{case(line,i)=>i.toString + "," + line}
+
+val newDS = sample1.zipWithIndex().map{case(line,i)=>i.toString + "," + line}
 
 val n = newDS.filter(line => line.contains("countryCode")).take(1).flatMap(line => line.split(","))
 val f = sc.parallelize(n).first().toInt
-for(a <- 1 to f){
- newDS.take(a).foreach(println)}
+newDS.take(f).foreach(println)
 
-println("To generate json")
+val pairD = newDS.take(f).map(line => (line.split(","))).map(fields => (fields(1),fields(2)))
+pairD.foreach(println)
+
+print("to convert to Json this file contains data for: ")
+pairD.map(x => x._1).mkString(",").foreach(print)
+
+
+//print("to convert to Json")
+
+//.map(fields => (fields(0),fields(1)))
+//val getJsonFor = newDS.filter(line => line.startsWith("3,")).map(line => line.split(",")).map(fields => (fields(2),fields(3)))
+//val k = getJsonFor.keys.take(1).foreach(println)
+//val v = getJsonFor.values.take(1).foreach(println)
+
 
 sc.stop()
 }
