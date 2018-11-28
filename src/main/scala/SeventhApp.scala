@@ -23,24 +23,110 @@ val newDS = sample1.zipWithIndex().map{case(line,i)=>i.toString + "," + line}
 
 val n = newDS.filter(line => line.contains("countryCode")).take(1).flatMap(line => line.split(","))
 val f = sc.parallelize(n).first().toInt
+println("Metadata in this fileInfo file is:")
+//newDS.take(f).slice(2,f).foreach(println)
+sample1.take(f).slice(2,f).foreach(println)
 
-newDS.take(f).slice(3,12).foreach(println)
-sample1.take(f).slice(3,f).foreach(println)
-val pairD = newDS.take(f).map(line => (line.split(","))).map(fields => (fields(1),fields(2)))
+val pairD = sample1.take(f).slice(3,f).map(line => (line.split(","))).map(fields => (fields(0),fields(1),fields(2)))
+pairD.foreach(println)
 
-println("to convert to Json this file contains data for: ")
+println("to convert to Json this file contains data for: ===> ")
 print("[")
 val test = pairD.map(x => x._1).mkString(" , ").foreach(print)
 print("]\n")
 
-val n1 = Source.fromFile("C:\\Users\\alay.singhal\\Desktop\\Codes\\After_markings_SMPC522A1DC0040_SE-PGA454_20171012_082108_FileInfo.txt").getLines.slice(0,12)
-n1.slice(3,12).foreach(println)
-//print("to convert to Json")
+//To replace SS4Json with AutovariableName
+//To replace x in take(x) where x = sum of ("row number that has fieldNames" + "no of rows including row number that has fieldNames")
+//To replace slice(a,b), where a = ( row number -1 ) & b = (x -1)
+//To append g with x for every row in metadata till we reach f
+//To append DataInC+x , where x corresponds to x with g
+//To append df+x, where x corresponds to x with g
+//To replace variable appended with output directory by the name of field.
+//or put this whole processing for all rows (2,f) in a loop.
 
-//.map(fields => (fields(0),fields(1)))
-//val getJsonFor = newDS.filter(line => line.startsWith("3,")).map(line => line.split(",")).map(fields => (fields(2),fields(3)))
-//val k = getJsonFor.keys.take(1).foreach(println)
-//val v = getJsonFor.values.take(1).foreach(println)
+//val c = pairD.map(x => x._1).mkString(" , ").split(",")
+//
+val spark = SparkSession.builder.master("local").appName("Spark_SQL_basic_example").getOrCreate()
+
+val SS4Json = sample1.take(15).slice(12,14)
+val g0 = sc.parallelize(SS4Json)
+g0.saveAsTextFile("C:\\Users\\alay.singhal\\Desktop\\Codes\\DataInC0")
+val df = spark.read.format("csv").option("inferSchema","true").option("header","true").load("C:\\Users\\alay.singhal\\Desktop\\Codes\\DataInC0" + "\\" + "part-00000")
+//println("fileinfo data in dataframe")
+//df.show(10)
+df.write.format("json").save("C:\\Users\\alay.singhal\\Desktop\\Codes\\DataInJson" + "-" + "envM")
+
+//sample1.take(17).slice(14,16).foreach(println)
+val SS4Json1 = sample1.take(17).slice(14,16)
+val g1 = sc.parallelize(SS4Json1)
+g1.saveAsTextFile("C:\\Users\\alay.singhal\\Desktop\\Codes\\DataInC1")
+val df1 = spark.read.format("csv").option("inferSchema","true").option("header","true").load("C:\\Users\\alay.singhal\\Desktop\\Codes\\DataInC1" + "\\" + "part-00000")
+//println("fileinfo data in dataframe")
+//df1.show(10)
+df1.write.format("json").save("C:\\Users\\alay.singhal\\Desktop\\Codes\\DataInJson1" + "-" + "fileM")
+
+//sample1.take(19).slice(16,18).foreach(println)
+val SS4Json2 = sample1.take(19).slice(16,18)
+val g2 = sc.parallelize(SS4Json2)
+g2.saveAsTextFile("C:\\Users\\alay.singhal\\Desktop\\Codes\\DataInC2")
+val df2 = spark.read.format("csv").option("inferSchema","true").option("header","true").load("C:\\Users\\alay.singhal\\Desktop\\Codes\\DataInC2" + "\\" + "part-00000")
+//println("fileinfo data in dataframe")
+//df2.show(10)
+df2.write.format("json").save("C:\\Users\\alay.singhal\\Desktop\\Codes\\DataInJson2" + "-" + "sysM")
+
+//sample1.take(21).slice(18,20).foreach(println)
+val SS4Json3 = sample1.take(21).slice(18,20)
+val g3 = sc.parallelize(SS4Json3)
+g3.saveAsTextFile("C:\\Users\\alay.singhal\\Desktop\\Codes\\DataInC3")
+val df3 = spark.read.format("csv").option("inferSchema","true").option("header","true").load("C:\\Users\\alay.singhal\\Desktop\\Codes\\DataInC3" + "\\" + "part-00000")
+//println("fileinfo data in dataframe")
+//df3.show(10)
+df3.write.format("json").save("C:\\Users\\alay.singhal\\Desktop\\Codes\\DataInJson3" + "-" + "VehIn")
+
+//sample1.take(23).slice(20,22).foreach(println)
+val SS4Json4 = sample1.take(23).slice(20,22)
+val g4 = sc.parallelize(SS4Json4)
+g4.saveAsTextFile("C:\\Users\\alay.singhal\\Desktop\\Codes\\DataInC4")
+val df4 = spark.read.format("csv").option("inferSchema","true").option("header","true").load("C:\\Users\\alay.singhal\\Desktop\\Codes\\DataInC4" + "\\" + "part-00000")
+//println("fileinfo data in dataframe")
+//df4.show(10)
+df4.write.format("json").save("C:\\Users\\alay.singhal\\Desktop\\Codes\\DataInJson4" + "-" + "visM")
+
+//sample1.take(242).slice(22,241).foreach(println)
+val SS4Json5 = sample1.take(242).slice(22,241)
+val g5 = sc.parallelize(SS4Json5)
+g5.saveAsTextFile("C:\\Users\\alay.singhal\\Desktop\\Codes\\DataInC5")
+val df5 = spark.read.format("csv").option("inferSchema","true").option("header","true").load("C:\\Users\\alay.singhal\\Desktop\\Codes\\DataInC5" + "\\" + "part-00000")
+//println("fileinfo data in dataframe")
+//df5.show(10)
+df5.write.format("json").save("C:\\Users\\alay.singhal\\Desktop\\Codes\\DataInJson5" + "-" + "pede")
+
+//sample1.take(1167).slice(241,1166).foreach(println)
+val SS4Json6 = sample1.take(1167).slice(241,1166)
+val g6 = sc.parallelize(SS4Json6)
+g6.saveAsTextFile("C:\\Users\\alay.singhal\\Desktop\\Codes\\DataInC6")
+val df6 = spark.read.format("csv").option("inferSchema","true").option("header","true").load("C:\\Users\\alay.singhal\\Desktop\\Codes\\DataInC6" + "\\" + "part-00000")
+//println("fileinfo data in dataframe")
+//df6.show(10)
+df6.write.format("json").save("C:\\Users\\alay.singhal\\Desktop\\Codes\\DataInJson6" + "-" + "twoW")
+
+//sample1.take(3888).slice(1166,3887).foreach(println)
+val SS4Json7 = sample1.take(3888).slice(1166,3887)
+val g7 = sc.parallelize(SS4Json7)
+g7.saveAsTextFile("C:\\Users\\alay.singhal\\Desktop\\Codes\\DataInC7")
+val df7 = spark.read.format("csv").option("inferSchema","true").option("header","true").load("C:\\Users\\alay.singhal\\Desktop\\Codes\\DataInC7" + "\\" + "part-00000")
+//println("fileinfo data in dataframe")
+//df7.show(10)
+df7.write.format("json").save("C:\\Users\\alay.singhal\\Desktop\\Codes\\DataInJson7" + "-" + "unclassi")
+
+//sample1.take(6362).slice(3887,6361).foreach(println)
+val SS4Json8 = sample1.take(6362).slice(3887,6361)
+val g8 = sc.parallelize(SS4Json8)
+g8.saveAsTextFile("C:\\Users\\alay.singhal\\Desktop\\Codes\\DataInC8")
+val df8 = spark.read.format("csv").option("inferSchema","true").option("header","true").load("C:\\Users\\alay.singhal\\Desktop\\Codes\\DataInC8" + "\\" + "part-00000")
+//println("fileinfo data in dataframe")
+//df8.show(10)
+df8.write.format("json").save("C:\\Users\\alay.singhal\\Desktop\\Codes\\DataInJson8" + "-" + "Veh")
 
 sc.stop()
 }
