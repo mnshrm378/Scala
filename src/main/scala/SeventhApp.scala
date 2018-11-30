@@ -23,17 +23,17 @@ val newDS = sample1.zipWithIndex().map{case(line,i)=>i.toString + "," + line}
 
 val n = newDS.filter(line => line.contains("countryCode")).take(1).flatMap(line => line.split(","))
 val f = sc.parallelize(n).first().toInt
-println("Metadata in this fileInfo file is:")
+//println("Metadata in this fileInfo file is:")
 //newDS.take(f).slice(2,f).foreach(println)
-sample1.take(f).slice(2,f).foreach(println)
+//sample1.take(f).slice(2,f).foreach(println)
 
-val pairD = sample1.take(f).slice(3,f).map(line => (line.split(","))).map(fields => (fields(0),fields(1),fields(2)))
-pairD.foreach(println)
+val pairD = sample1.take(f).slice(3,f).map(line => (line.split(","))).map(fields => (fields(0),fields(1).toInt,fields(2).toInt))
+//pairD.foreach(println)
 
-println("to convert to Json this file contains data for: ===> ")
-print("[")
-val test = pairD.map(x => x._1).mkString(" , ").foreach(print)
-print("]\n")
+//println("to convert to Json this file contains data for: ===> ")
+//print("[")
+//val test = pairD.map(x => x._1).mkString(" , ").foreach(print)
+//print("]\n")
 
 //To replace SS4Json with AutovariableName
 //To replace x in take(x) where x = sum of ("row number that has fieldNames" + "no of rows including row number that has fieldNames")
@@ -146,6 +146,17 @@ val df8 = spark.read.format("csv").option("inferSchema","true").option("header",
 //println("fileinfo data in dataframe")
 //df8.show(10)
 df8.write.format("json").save("C:\\Users\\ajay\\Desktop\\Codes\\DataInJson8" + "-" + "Veh")
+
+println("Metadata in this fileInfo file is:")
+//newDS.take(f).slice(2,f).foreach(println)
+//sample1.take(f).slice(2,f).foreach(println)
+
+pairD.foreach(println)
+
+println("to convert to Json this file contains data for: ===> ")
+print("[")
+val test = pairD.map(x => x._1).mkString(" , ").foreach(print)
+print("]\n")
 
 sc.stop()
 }
